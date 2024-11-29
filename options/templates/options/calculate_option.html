@@ -1,0 +1,96 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculate Option Price</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background-color: #fff; /* White background */
+            color: white; /* Black text color */
+            background: url("{% static 'images/feb.jpg' %}") no-repeat center center fixed;
+            background-size: cover; /* Cover the entire page */
+
+        }
+        form {
+            margin-bottom: 20px;
+        }
+        .output {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .plot {
+            margin-top: 20px;
+            max-width: 100%; /* Ensure plot image doesn't exceed container width */
+        }
+        h1, h2, h3, p, label, select, button {
+            color:white; /* Black text color for headings, paragraphs, labels, selects, and buttons */
+        }
+        select, button {
+            font-size: 16px; /* Adjust font size for dropdown and button */
+            padding: 8px 12px; /* Padding for dropdown and button */
+            background-color: #555; /* Darker background color for select and button */
+            border: none; /* Remove border */
+            cursor: pointer; /* Pointer cursor on hover */
+        }
+        select:hover, button:hover {
+            background-color: white; /* Slightly lighter background color on hover */
+        }
+        .inference {
+            margin-top: 40px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Calculate Option Price</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <label for="company_name">Select a company:</label>
+        <select name="company_name" id="company_name">
+            {% for company in companies %}
+                <option value="{{ company }}">{{ company }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Calculate</button>
+    </form>
+
+    {% if selected_company %}
+        <div class="output">
+            <h2>Results for {{ selected_company }}</h2>
+            <p>Option Price: {{ option_price }}</p>
+            <p>Implied Volatility: {{ implied_vol }}</p>
+            <p>Mean Squared Error: {{ mse }}</p>
+        </div>
+
+        <div class="plot">
+            <h2>Option Price Comparison</h2>
+            <img src="data:image/png;base64,{{ plot_image }}" alt="Option Price Comparison Plot">
+        </div>
+
+        <div class="inference">
+            <h3>Detailed Inference</h3>
+            <p>
+                The calculated option price of {{ option_price }} for {{ selected_company }}
+                suggests that the current market valuation reflects expectations of
+                {{ implied_vol }} volatility in the underlying asset's price. The model's
+                accuracy, as indicated by the Mean Squared Error (MSE) of {{ mse }},
+                demonstrates {{ selected_company }}'s option pricing efficiency. Further analysis
+                into historical data trends and external market factors is recommended
+                to validate these findings and refine future forecasts.
+            </p>
+        </div>
+    {% endif %}
+
+</body>
+</html>

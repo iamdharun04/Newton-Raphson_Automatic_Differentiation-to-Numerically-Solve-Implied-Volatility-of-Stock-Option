@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Project Details</title>
+</head>
+<body>
+    <h1>{{ project_name }}</h1>
+    <p>{{ description }}</p>
+
+    <h2>Technologies Used</h2>
+    <ul>
+        {% for tech in technologies_used %}
+            <li>{{ tech }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Features</h2>
+    <ul>
+        {% for feature in features %}
+            <li>{{ feature }}</li>
+        {% endfor %}
+    </ul>
+
+    <h2>Author</h2>
+    <p>{{ author }}</p>
+
+    <h2>Contact</h2>
+    <p>Email: <a href="mailto:{{ contact_email }}">{{ contact_email }}</a></p>
+
+    <p><a href="{% url 'home' %}">Back to Home</a></p>
+</body>
+</html>
